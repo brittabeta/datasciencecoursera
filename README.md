@@ -1,12 +1,11 @@
-## Getting and Cleaning Data Project
-## R Programming Project 3
+# Getting and Cleaning Data Project | R Programming Project 3
 
 Student: Britta <br />
 
-# Data Zip File Location
+### Data Zip File Location
 [UC Irvine Repo](https://d396qusza40orc.cloudfront.net/getdata%2Fprojectfiles%2FUCI%20HAR%20Dataset.zip "Clicking will download the data")
 
-# Project Outline
+### Project Outline
 1. Load Packages and get the Data
 2. Load activity labels + features
 3. Load train datasets
