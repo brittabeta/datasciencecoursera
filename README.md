@@ -16,18 +16,12 @@ Student: Britta <br />
 
 ### 1. Load Packages and get the Data
 ```R
-# install.packages("data.table")
-library("data.table")
-
-# Reading in data
-outcome <- data.table::fread('outcome-of-care-measures.csv')
-outcome[, (11) := lapply(.SD, as.numeric), .SDcols = (11)]
-outcome[, lapply(.SD
-                 , hist
-                 , xlab= "Deaths"
-                 , main = "Hospital 30-Day Death (Mortality) Rates from Heart Attack"
-                 , col="lightblue")
-        , .SDcols = (11)]
+packages <- c("data.table", "reshape2")
+sapply(packages, require, character.only=TRUE, quietly=TRUE)
+path <- getwd()
+url <- "https://d396qusza40orc.cloudfront.net/getdata%2Fprojectfiles%2FUCI%20HAR%20Dataset.zip"
+download.file(url, file.path(path, "dataFiles.zip"))
+unzip(zipfile = "dataFiles.zip")
 ```
 
 ### 2. Load activity labels + features
