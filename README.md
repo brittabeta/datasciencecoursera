@@ -77,10 +77,6 @@ combined[["Activity"]] <- factor(combined[, Activity]
 
 combined[["SubjectNum"]] <- as.factor(combined[, SubjectNum])
 combined <- reshape2::melt(data = combined, id = c("SubjectNum", "Activity"))
-
-combined <- reshape2::dcast(data = combined, SubjectNum + Activity ~ variable, fun.aggregate = mean)
-
-data.table::fwrite(x = combined, file = "tidyData.txt", quote = FALSE)
 ```
 
 ### 7. Create a second, independent tidy data set with the average of each variable for each activity and each subject
