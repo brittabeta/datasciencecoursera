@@ -83,6 +83,8 @@ combined <- reshape2::melt(data = combined, id = c("SubjectNum", "Activity"))
 ```R
 combined <- reshape2::dcast(data = combined, SubjectNum + Activity ~ variable, fun.aggregate = mean)
 data.table::fwrite(x = combined, file = "tidyData.txt", quote = FALSE)
+# also create a .csv
+data.table::fwrite(x = combined, file = "tidyData.csv", quote = FALSE)
 ```
 
 #### Contributors
