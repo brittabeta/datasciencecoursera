@@ -1,5 +1,5 @@
 # Getting and Cleaning Data Project John Hopkins Coursera
-# Author: Michael Galarnyk
+# Student: Britta
 
 # 1. Merges the training and the test sets to create one data set.
 # 2. Extracts only the measurements on the mean and standard deviation for each measurement.
@@ -55,3 +55,5 @@ combined <- reshape2::melt(data = combined, id = c("SubjectNum", "Activity"))
 combined <- reshape2::dcast(data = combined, SubjectNum + Activity ~ variable, fun.aggregate = mean)
 
 data.table::fwrite(x = combined, file = "tidyData.txt", quote = FALSE)
+
+# Credits: Michael Galarnyk
