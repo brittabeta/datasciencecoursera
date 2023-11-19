@@ -1,9 +1,85 @@
 ## Getting and Cleaning Data Project
+## R Programming Project 3
 
 Student: Britta <br />
-Blog Post: [Getting and Cleaning Data Review](https://medium.com/@GalarnykMichael/review-course-1-the-data-scientists-toolbox-jhu-coursera-4d7459458821#.5jpg133ln "Click to go to Repo") <br />
-Data Zip File Location: [UC Irvine Repo](https://d396qusza40orc.cloudfront.net/getdata%2Fprojectfiles%2FUCI%20HAR%20Dataset.zip "Clicking will download the data")
-Credits: Michael Galarnyk <br />
+
+# Data Zip File Location
+[UC Irvine Repo](https://d396qusza40orc.cloudfront.net/getdata%2Fprojectfiles%2FUCI%20HAR%20Dataset.zip "Clicking will download the data")
+
+# Project Outline
+1. Load Packages and get the Data
+2. Load activity labels + features
+3. Load train datasets
+4. Load test datasets
+5. Merge datasets
+6. Convert classLabels to activityName
+
+### 1. Load Packages and get the Data
+```R
+# install.packages("data.table")
+library("data.table")
+
+# Reading in data
+outcome <- data.table::fread('outcome-of-care-measures.csv')
+outcome[, (11) := lapply(.SD, as.numeric), .SDcols = (11)]
+outcome[, lapply(.SD
+                 , hist
+                 , xlab= "Deaths"
+                 , main = "Hospital 30-Day Death (Mortality) Rates from Heart Attack"
+                 , col="lightblue")
+        , .SDcols = (11)]
+```
+
+### 2. Load activity labels + features
+```R
+activityLabels <- fread(file.path(path, "UCI HAR Dataset/activity_labels.txt")
+                        , col.names = c("classLabels", "activityName"))
+features <- fread(file.path(path, "UCI HAR Dataset/features.txt")
+                  , col.names = c("index", "featureNames"))
+featuresWanted <- grep("(mean|std)\\(\\)", features[, featureNames])
+measurements <- features[featuresWanted, featureNames]
+measurements <- gsub('[()]', '', measurements)
+```
+
+### 3. Load train datasets
+```R
+train <- fread(file.path(path, "UCI HAR Dataset/train/X_train.txt"))[, featuresWanted, with = FALSE]
+data.table::setnames(train, colnames(train), measurements)
+trainActivities <- fread(file.path(path, "UCI HAR Dataset/train/Y_train.txt")
+                       , col.names = c("Activity"))
+trainSubjects <- fread(file.path(path, "UCI HAR Dataset/train/subject_train.txt")
+                       , col.names = c("SubjectNum"))
+train <- cbind(trainSubjects, trainActivities, train)
+```
+
+### 4. Load test datasets
+```R
+test <- fread(file.path(path, "UCI HAR Dataset/test/X_test.txt"))[, featuresWanted, with = FALSE]
+data.table::setnames(test, colnames(test), measurements)
+testActivities <- fread(file.path(path, "UCI HAR Dataset/test/Y_test.txt")
+                        , col.names = c("Activity"))
+testSubjects <- fread(file.path(path, "UCI HAR Dataset/test/subject_test.txt")
+                      , col.names = c("SubjectNum"))
+test <- cbind(testSubjects, testActivities, test)
+```
+
+### 5. Merge datasets
+```R
+combined <- rbind(train, test)
+```
+
+### 6. Convert classLabels to activityName
+```R
+combined[["Activity"]] <- factor(combined[, Activity]
+                              , levels = activityLabels[["classLabels"]]
+                              , labels = activityLabels[["activityName"]])
+
+combined[["SubjectNum"]] <- as.factor(combined[, SubjectNum])
+combined <- reshape2::melt(data = combined, id = c("SubjectNum", "Activity"))
+combined <- reshape2::dcast(data = combined, SubjectNum + Activity ~ variable, fun.aggregate = mean)
+
+data.table::fwrite(x = combined, file = "tidyData.txt", quote = FALSE)
+```
 
 ## Goal of the Project
 1. A tidy data set 
@@ -26,7 +102,7 @@ README | ReadingItNow |  [Repo Link](https://github.com/mGalarnyk/datasciencecou
 FirstName | LastName | Email
 --- | --- | ---
 Michael |  Galarnyk |  <mgalarny@gmail.com>
-Submit |  Pull Request | <youremailhere@gmail.com>
+Britta |  S. | <bretana1226@gmail.com>
 
 ## License
 
