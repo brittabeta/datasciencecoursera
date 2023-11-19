@@ -9,13 +9,13 @@ Student: Britta <br />
 ### Project Outline
 1. Load Packages and get the Data
 2. Use descriptive activity names to name the activities in the data set
-  - Load activity labels + features to appropriately label the combined data
-  - Extract only measurements on the mean and standard deviation for each measurement
+a. Load activity labels + features to appropriately label the combined data
+b. Extract only measurements on the mean and standard deviation for each measurement
 3. Load train datasets
 4. Load test datasets
 5. Merge datasets
 6. Appropriately label the data set with descriptive variable names
-  - Convert classLabels to activityName
+a. Convert classLabels to activityName
 7. Create a second, independent tidy data set with the average of each variable for each activity and each subject
 
 ### 1. Load Packages and get the Data
